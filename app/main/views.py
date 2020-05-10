@@ -1,8 +1,8 @@
-from flask import Flask
-from app import app
+from flask import render_template
+from . import main
 
 
-@app.route('/')
+@main.route('/')
 def index():
 
-    rettun render_template('index.html')
+    return render_template('index.html')
