@@ -73,7 +73,25 @@ def comment(blog_id):
     return render_template('comment.html' ,title = title, comment_form = comment_form, comment=all_comments)
 
 
-@main.route('/blog/<int:blog_id>')
-def blog(blog_id):
+@main.route('/blog/<int:blog_id>/update', methods =['GET', 'POST'])
+@login_required
+def update_blog(blog_id):
     blog = Blog.query.get(blog_id)
-    return render_template('blogs.html',title = blog.title, blog=blog)
+    if blog.author != current_user:
+        abort(403)
+    form = BlogForm()
+    if form.validate_on_submit():
+        blog.title = form.title.data
+        blog.blog = form.content.data
+        db.session.commit()
+        flash('Your blog has been updated!', 'success')
+        return redirect(url_for('blog', blog_id=blog.id))
+    elif request.method == 'GET':
+        form.title.data = blog.title
+        form.blog.data = blog.blog
+    return render_template('blog.html',title = 'Update post', form=form)
+
+
+
+
+    
