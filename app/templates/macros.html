@@ -1,0 +1,32 @@
+<!-- Displaying reviews macro -->
+{% macro displayBlogs(blog_list) %}
+    {% for blog in blog_list %}
+    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 review-card">
+        <h3>{{blog.blog_title}}</h3>
+        <h4>  posted on {{blog.posted.strftime('%d/%m/%Y')}} </h4>
+        <p> {{ blog.blog}} </p>
+       
+        
+        <button class="btn btn-default"><a href="{{url_for('main.comment',blog_id=blog.id)}}">Comment</a></button>
+
+
+    </div>
+    {% endfor %}
+{% endmacro %}
+
+{% macro displayComments(all_comments)%}
+    {% if all_comments%}
+
+        {% for comment in all_comments %}
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 review-card">
+
+            <div class="media-body">
+                <h4>{{comment.user.username}}</h4>
+                <p>{{comment.comment}}</p>
+            </div>
+
+        </div>
+        {% endfor %}
+    {% endif %}
+
+{% endmacro %}
