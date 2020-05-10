@@ -5,6 +5,7 @@ from config import Config_options
 
 
 bootstrap = Bootstrap()
+app = Flask(__name__)
 
 
 def create_app(config_name):

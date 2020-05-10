@@ -3,7 +3,7 @@ import urllib.request,json
 from .models import Quote
 
 
-base_url = app.config['QUOTES_API_BASE_URL']
+base_url = 'http://quotes.stormconsultancy.co.uk/random.json'
 
 
 def get_quotes():
@@ -14,10 +14,18 @@ def get_quotes():
 
         quote_result = None
 
-        if get_quotes_response['results']:
-            quote_result_list = get_quotes_response['results']
-            quote_result = process_results(quote_result_list)
+        
 
     
+
+    return quote_result
+
+def process_results(quote_list):
+
+    quote_result = []
+    for quote_item in quote_list:
+        author = quote_item.get('author')
+        quote = quote_item.get('quote')
+
 
     return quote_result
