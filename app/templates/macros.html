@@ -1,16 +1,17 @@
 <!-- Displaying reviews macro -->
 {% macro displayBlogs(blog_list) %}
     {% for blog in blog_list %}
-    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 review-card">
-        <h3>{{blog.blog_title}}</h3>
-        <h4>  posted on {{blog.posted.strftime('%d/%m/%Y')}} </h4>
-        <p> {{ blog.blog}} </p>
        
         
-        <button class="btn btn-default"><a href="{{url_for('main.comment',blog_id=blog.id)}}">Comment</a></button>
+
+    <h2>{{blog.blog_title}}</h2>
+      <h5><span class="glyphicon glyphicon-time"></span> posted on {{blog.posted.strftime('%d/%m/%Y')}}</h5>
+      <span class="label label-primary">Trending</span></h5><br>
+      <p>{{ blog.blog}} </p>
+      <br><br>
+      <button class="btn btn-default"><a href="{{url_for('main.comment',blog_id=blog.id)}}">Comment</a></button>
 
 
-    </div>
     {% endfor %}
 {% endmacro %}
 

@@ -1,5 +1,4 @@
 from flask import render_template,request,redirect,url_for,abort
-from app.requests import get_quotes
 from . import main
 from .forms import BlogForm,CommentForm
 from flask_login import login_required, current_user
@@ -11,12 +10,13 @@ from ..models import User,Blog,Comment
 @main.route('/')
 def index():
 
+    
 
     blogs = Blog.get_blogs()
 
-
+    
     title = 'K Blog'
-    return render_template('index.html',title = title, comments = comments)
+    return render_template('index.html',title = title,blogs=blogs)
 
 
 
