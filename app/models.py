@@ -67,11 +67,31 @@ class Blog(db.Model):
     __tablename__ = 'blogs'
 
     id = db.Column(db.Integer,primary_key = True)
-    pitch_id = db.Column(db.Integer)
+    blog_id = db.Column(db.Integer)
     category = db.Column(db.String)
     blog_title = db.Column(db.String)
     blog = db.Column(db.String)
     posted = db.Column(db.DateTime,default=datetime.utcnow)
     author = db.Column(db.Integer,db.ForeignKey("users.id"))
 
-    comments = db.relationship('Comment', backref = 'pitch', lazy ='dynamic')
+    comments = db.relationship('Comment', backref = 'blog', lazy ='dynamic')
+
+
+    def save_blog(self):
+        db.session.add(self)
+        db.session.commit()
+
+    
+    @classmethod
+    def get_blogs(cls):
+        blogs = Blog.query.filter_by().all()
+        return blogs
+
+    @classmethod
+    def get_all_blogs(cls):
+        blogs = Blog.query.order_by('-id').all()
+        return blogs
+
+
+    def __repr__(self):
+        return f'Blog {self.blog_title}'
