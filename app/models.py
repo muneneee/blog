@@ -67,7 +67,6 @@ class Blog(db.Model):
     __tablename__ = 'blogs'
 
     id = db.Column(db.Integer,primary_key = True)
-    blog_id = db.Column(db.Integer)
     category = db.Column(db.String)
     blog_title = db.Column(db.String)
     blog = db.Column(db.String)

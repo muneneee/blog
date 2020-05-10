@@ -71,3 +71,9 @@ def comment(blog_id):
 
     title = 'comment'
     return render_template('comment.html' ,title = title, comment_form = comment_form, comment=all_comments)
+
+
+@main.route('/blog/<int:blog_id>')
+def blog(blog_id):
+    blog = Blog.query.get(blog_id)
+    return render_template('blogs.html',title = blog.title, blog=blog)

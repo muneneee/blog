@@ -1,0 +1,22 @@
+{%  import 'macros.html' as macro with context %}
+{% extends 'base.html'%}
+
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row content">
+    <div class="col-sm-9">
+      <h4><small></small></h4>
+      <hr>
+      <h2></h2>
+      <p>{{macro.displayBlogs(blogs)}}</p>
+      <br><br>
+    
+      
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}
