@@ -10,6 +10,12 @@
       <p>{{ blog.blog}} </p>
       <br><br>
       <button class="btn btn-default"><a href="{{url_for('main.comment',blog_id=blog.id)}}">Comment</a></button>
+      {% if blog.author == current_user %}
+          <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_blog', blog_id=blog.id) }}">Update</a>
+            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+          </div>
+      {% endif %}
 
 
     {% endfor %}

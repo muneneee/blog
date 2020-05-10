@@ -16,7 +16,7 @@ def index():
 
     
     title = 'K Blog'
-    return render_template('index.html',title = title,blogs=blogs)
+    return render_template('index.html',title = title,blog=blogs)
 
 
 
@@ -90,6 +90,18 @@ def update_blog(blog_id):
         form.title.data = blog.title
         form.blog.data = blog.blog
     return render_template('blog.html',title = 'Update post', form=form)
+
+
+@main.route('/blog/<int:blog_id>/delete', methods=['POST'])
+@login_required
+def delete_blog(blog_id):
+    blog = Blog.query.get(blog_id)
+    if blog.author != current_user:
+        abort(403)
+    db.session.delete(blog)
+    db.session.commit()
+    flash('Your post has been deleted!', 'success')
+    return redirect(url_for('main.index'))
 
 
 
