@@ -14,3 +14,7 @@ class BlogForm(FlaskForm):
 class CommentForm(FlaskForm):
     comment = TextAreaField("Leave a comment", validators = [Required()])
     submit = SubmitField("Post")
+
+
+class SubForm(FlaskForm):
+    submit = SubmitField("Get notifications for every new blog")

@@ -8,4 +8,8 @@
             {{ wtf.quick_form(blog_form) }}
         </div>
     </div>
+    <div class="container">
+        {{sub_form.csrf_token}}
+        {{wtf.quick_form(sub_form)}}
+    </div>
 {% endblock %}

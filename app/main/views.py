@@ -1,6 +1,6 @@
 from flask import render_template,request,redirect,url_for,abort,flash
 from . import main
-from .forms import BlogForm,CommentForm
+from .forms import BlogForm,CommentForm,SubForm
 from flask_login import login_required, current_user
 from .. import db
 from ..models import User,Post,Comment
@@ -41,6 +41,7 @@ def profile(uname):
 @login_required
 def new_post():
     blog_form = BlogForm()
+    sub_form = SubForm()
 
     if blog_form.validate_on_submit():
         post = Post(title=blog_form.title.data, content=blog_form.content.data, author=current_user)
@@ -49,11 +50,12 @@ def new_post():
         flash('Your post has been created!', 'success')
         return redirect(url_for('main.index'))
 
-
-        mail_message("NEW BLOG","gmail/sucription",user.email,user,user=user)
+        if sub_form.validate_on_submit():
+            mail_message("NEW BLOG","gmail/sucription",user.email,user,user=user)
+            flash('You have subscribed to notifications','success')
 
     title = 'New Blog'
-    return render_template('blog.html' ,title = title, blog_form = blog_form)
+    return render_template('blog.html' ,title = title, blog_form = blog_form,sub_form=sub_form)
 
 
 
@@ -76,7 +78,7 @@ def comment(post_id):
     all_comments = Comment.query.filter_by(post_id=post_id).all()
 
     title = 'comment'
-    return render_template('comment.html' ,title = title, comment_form = comment_form, comment=all_comments)
+    return render_template('comment.html' ,title = title, comment_form = comment_form, comment=all_comments,)
 
 
 @main.route('/blog/<int:post_id>/update', methods =['GET', 'POST'])
