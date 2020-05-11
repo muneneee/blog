@@ -12,11 +12,11 @@ def index():
 
     
 
-    blogs = Blog.get_blogs()
+    blogs = Blog.query.all()
 
     
     title = 'K Blog'
-    return render_template('index.html',title = title,blog=blogs)
+    return render_template('index.html',title = title,blogs =blogs)
 
 
 
