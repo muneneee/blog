@@ -1,9 +1,9 @@
-from flask import render_template,request,redirect,url_for,abort
+from flask import render_template,request,redirect,url_for,abort,flash
 from . import main
 from .forms import BlogForm,CommentForm
 from flask_login import login_required, current_user
 from .. import db
-from ..models import User,Blog,Comment
+from ..models import User,Post,Comment
 
 
 
@@ -12,11 +12,11 @@ def index():
 
     
 
-    blogs = Blog.query.all()
+    posts = Post.query.all()
 
     
     title = 'K Blog'
-    return render_template('index.html',title = title,blogs =blogs)
+    return render_template('index.html',title = title,posts =posts)
 
 
 
@@ -33,29 +33,30 @@ def profile(uname):
 
 
 
+
 @main.route('/blog', methods = ['GET','POST'])
 @login_required
-def new_blog():
-    form = BlogForm()
+def new_post():
+    blog_form = BlogForm()
 
-    if form.validate_on_submit():
-        blog_title = form.title.data
-        blog = form.blog.data
-        new_blog = Blog(blog_title=blog_title,blog = blog)
-        new_blog.save_blog()
+    if blog_form.validate_on_submit():
+        post = Post(title=blog_form.title.data, content=blog_form.content.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
         return redirect(url_for('main.index'))
 
 
     title = 'New Blog'
-    return render_template('blog.html' ,title = title, blog_form = form)
+    return render_template('blog.html' ,title = title, blog_form = blog_form)
 
 
 
-@main.route('/blog/<int:blog_id>/comment', methods = ['GET','POST'])
+@main.route('/blog/<int:post_id>/comment', methods = ['GET','POST'])
 @login_required
-def comment(blog_id):
+def comment(post_id):
     comment_form = CommentForm()
-    my_blog = Blog.query.get(blog_id)
+    my_blog = Post.query.get(post_id)
 
     if my_blog is None:
         abort(404)
@@ -63,45 +64,44 @@ def comment(blog_id):
 
     if comment_form.validate_on_submit():
         comment = comment_form.comment.data
-        new_comment = Comment(comment = comment, blog_id = blog_id, user = current_user)
+        new_comment = Comment(comment = comment, post_id = post_id, user = current_user)
         new_comment.save_comment()
-        return redirect(url_for('.comment', blog_id=blog_id))
+        return redirect(url_for('.comment', post_id=post_id))
 
-    all_comments = Comment.query.filter_by(blog_id=blog_id).all()
+    all_comments = Comment.query.filter_by(post_id=post_id).all()
 
     title = 'comment'
     return render_template('comment.html' ,title = title, comment_form = comment_form, comment=all_comments)
 
 
-@main.route('/blog/<int:blog_id>/update', methods =['GET', 'POST'])
+@main.route('/blog/<int:post_id>/update', methods =['GET', 'POST'])
 @login_required
-def update_blog(blog_id):
-    blog = Blog.query.get(blog_id)
-    if blog.author != current_user:
+def update_post(post_id):
+    post = Post.query.get(post_id)
+    if post.author != current_user:
         abort(403)
-    form = BlogForm()
-    if form.validate_on_submit():
-        blog.title = form.title.data
-        blog.blog = form.content.data
+    blog_form = BlogForm()
+    if blog_form.validate_on_submit():
+        post.title = blog_form.title.data
+        post.content = blog_form.content.data
         db.session.commit()
         flash('Your blog has been updated!', 'success')
-        return redirect(url_for('blog', blog_id=blog.id))
+        return redirect(url_for('main.index', post_id=post.id))
     elif request.method == 'GET':
-        form.title.data = blog.title
-        form.blog.data = blog.blog
-    return render_template('blog.html',title = 'Update post', form=form)
+        blog_form.title.data = post.title
+        blog_form.content.data = post.content
+    return render_template('blog.html',title = 'Update post', blog_form=blog_form)
 
 
-@main.route('/blog/<int:blog_id>/delete', methods=['POST'])
+@main.route('/blog/<int:post_id>/delete', methods=['POST'])
 @login_required
-def delete_blog(blog_id):
-    blog = Blog.query.get(blog_id)
-    if blog.author != current_user:
-        abort(403)
-    db.session.delete(blog)
-    db.session.commit()
-    flash('Your post has been deleted!', 'success')
-    return redirect(url_for('main.index'))
+def delete_post(post_id):
+    post = Post.query.get(post_id)
+    if post.author == current_user:
+        db.session.delete(post)
+        db.session.commit()
+        flash('Your post has been deleted!', 'success')
+        return redirect(url_for('main.index'))
 
 
 
