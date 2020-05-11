@@ -4,6 +4,8 @@ from .forms import BlogForm,CommentForm
 from flask_login import login_required, current_user
 from .. import db
 from ..models import User,Post,Comment
+from ..gmail import mail_message
+from ..requests import get_quotes
 
 
 
@@ -13,10 +15,11 @@ def index():
     
 
     posts = Post.query.all()
+    quote = get_quotes()
 
     
     title = 'K Blog'
-    return render_template('index.html',title = title,posts =posts)
+    return render_template('index.html',title = title,posts =posts,quote=quote)
 
 
 
@@ -46,6 +49,8 @@ def new_post():
         flash('Your post has been created!', 'success')
         return redirect(url_for('main.index'))
 
+
+        mail_message("NEW BLOG","gmail/sucription",user.email,user,user=user)
 
     title = 'New Blog'
     return render_template('blog.html' ,title = title, blog_form = blog_form)
