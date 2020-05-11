@@ -2,30 +2,39 @@
 {% extends 'base.html'%}
 {% block styles%}
     {{ super() }}
-    <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='index.css')}}">
 {% endblock %}
   
   
 
 {% block content %}
-  <p>{{quote.quote}}</p>
-  <p><small>{{quote.author}}</small></p>
-        
+  <div class="text-center">
+      <p style="font-size: xx-large;"><strong>{{quote.quote}}</strong></p>
+      <p>{{quote.author}}</p>
+  </div> 
+  <br>
+  <br>    
   {% for post in posts %}        
-    <div class="container">
-      <h2>{{post.title}}</h2>
-      
-      <span class="label label-primary">posted on {{post.date_posted.strftime('%d/%m/%Y')}}</span></h5><br>
-      <p>{{ post.content }} </p>
-      <br><br>
-      <button class="btn btn-default"><a href="{{url_for('main.comment',post_id=post.id)}}">Comment</a></button>
+    
+    <div class="card" id="cards">
+      <div class="card-header" style="font-size: x-large;">
+        {{post.title}}
+      </div>
+      <div class="card-body">
+        <blockquote class="blockquote mb-0">
+          <p>{{ post.content }}</p>
+          <br><br>
+          <button class="btn btn-default"><a href="{{url_for('main.comment',post_id=post.id)}}">Comment</a></button>
+          {% if post.author == current_user %}
+            <div>
+              <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('main.update_post', post_id=post.id) }}">Update</a>
+              <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+            </div>
+          {% endif %}
 
-      {% if post.author == current_user %}
-        <div>
-          <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('main.update_post', post_id=post.id) }}">Update</a>
-          <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
-        </div>
-      {% endif %}
+          <footer class="blockquote-footer">posted on {{post.date_posted.strftime('%d/%m/%Y')}}</footer>
+        </blockquote>
+      </div>
     </div>
   
 

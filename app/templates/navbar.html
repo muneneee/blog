@@ -1,18 +1,26 @@
-<div class="row-content" style="background-color:#D6D1CF;">
-      <div class="col-sm-3 sidenav"  >
-        <h4>Kevin's Blog</h4>
-        <ul class="nav nav-pills nav-stacked">
-          <li class="active"><a href="/">Home</a></li>
-          <li><a href="/blog">+Add Blog</a></li>
-          {% if current_user.is_authenticated %}
-            <li><a href="{{url_for('main.profile',uname=current_user.username)}}">Profile</a></li>
-            <li><a href="{{url_for('auth.logout')}}">Log out</a></li>
-          {% else %}  
-            <li><a href="{{url_for('auth.login')}}">Sign in</a></li>
+<div class="navbar navbar-inverse navbar-light" role="navigation" style="background-color: #e3f2fd;">
+  <div class="container-fluid">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">KBLOG</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"> HOME </a>
+      </div>
+      <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/blog">+Add Blog</a></li>
+            {% if current_user.is_authenticated %}
+              <li><a href="{{url_for('main.profile',uname=current_user.username)}}">Profile</a></li>
+              <li><a href="{{url_for('auth.logout')}}">Log out</a></li>
+            {% else %}  
+              <li><a href="{{url_for('auth.login')}}">Sign in</a></li>
       
-          {%endif%}
-          </ul><br>
-        
+            {%endif%}
+          </ul>
       </div>
 
+  </div>
 </div>

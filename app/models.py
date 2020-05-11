@@ -67,6 +67,8 @@ class Post(db.Model):
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+
+
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
 
@@ -81,6 +83,9 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     posted = db.Column(db.DateTime,default=datetime.utcnow)
 
+    
+
+    
 
     def save_comment(self):
         db.session.add(self)
