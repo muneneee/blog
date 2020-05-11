@@ -66,7 +66,7 @@ def comment(post_id):
         comment = comment_form.comment.data
         new_comment = Comment(comment = comment, post_id = post_id, user = current_user)
         new_comment.save_comment()
-        return redirect(url_for('.comment', post_id=post_id))
+        return redirect(url_for('main.comment', post_id=post_id))
 
     all_comments = Comment.query.filter_by(post_id=post_id).all()
 
