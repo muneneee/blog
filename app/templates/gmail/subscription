@@ -1,3 +1,3 @@
 Hello {{user.username}}
 A new blog has been added
-Visit the webiste to view it https://kevblog.herokuapp.com/
+Visit the webiste to view it https://kevoblog.herokuapp.com/
